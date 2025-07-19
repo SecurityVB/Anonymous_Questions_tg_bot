@@ -1,0 +1,4 @@
+VENV
+*.log
+.env
+.idea
