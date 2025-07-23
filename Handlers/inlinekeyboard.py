@@ -30,7 +30,7 @@ async def make_link(call: CallbackQuery):
 @inline_kb_router.callback_query(F.data == "donate_author_bot")
 async def donate_author_bot(call: CallbackQuery, state: FSMContext):
     await state.set_state(Form.price)
-    await bot.send_message(chat_id=call.message.chat.id, text="🎁 Введите сумму пожертвования <b>без пробелов и спец. знаков</b>\n\n❕Минимальная сумма установленная телеграмом - 10₽")
+    await bot.send_message(chat_id=call.message.chat.id, text="🎁 Введите сумму пожертвования <b>без пробелов и спец. знаков</b>\n\n") # ❕Минимальная сумма установленная телеграмом - 10₽")
 
 
 @inline_kb_router.message(Form.price)
@@ -42,7 +42,8 @@ async def process_price(message: types.Message, state: FSMContext):
     await state.clear()
     try:
         value = int(data['price'])
-        await bot.send_message(chat_id=message.chat.id, text="Выберите удобный для вас способ оплаты", reply_markup=kb_payment_method_donate.as_markup())
+        await donate_send_invoice_stars(message.chat.id)
+        # await bot.send_message(chat_id=message.chat.id, text="Выберите удобный для вас способ оплаты", reply_markup=kb_payment_method_donate.as_markup())
     except Exception as err:
         logger.warning(f"Пользователь ввёл некорректную сумму пожертвования: {err}")
         await message.answer("❌ Вы ввели некорректную сумму пожертвования.")
@@ -80,12 +81,12 @@ async def donate_send_invoice_rub(chat_id):
 async def donate_send_invoice_stars(chat_id):
     global value
 
-    stars = int(value*1.35)
-    if stars % 5 != 0:
-        while stars % 5 != 0:
-            stars -= 1
+    # stars = int(value*1.35)
+    # if stars % 5 != 0:
+    #     while stars % 5 != 0:
+    #         stars -= 1
 
-    prices = [LabeledPrice(label="Пожертвовать автору", amount=stars)]
+    prices = [LabeledPrice(label="Пожертвовать автору", amount=value)]
     await bot.send_invoice(
         chat_id,
         title="Поддержка автора",
@@ -106,7 +107,8 @@ async def donate_send_invoice_stars(chat_id):
 
 @inline_kb_router.callback_query(F.data == "check_author")
 async def check_author(call: CallbackQuery):
-    await bot.send_message(chat_id=call.message.chat.id, text="Выберите удобный для вас способ оплаты", reply_markup=kb_payment_method_check.as_markup())
+    await check_author_send_invoice_stars(call.message.chat.id)
+    # await bot.send_message(chat_id=call.message.chat.id, text="Выберите удобный для вас способ оплаты", reply_markup=kb_payment_method_check.as_markup())
 
 
 @inline_kb_router.callback_query(F.data.in_(['pay_rub_check', 'pay_stars_check']))
