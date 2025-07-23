@@ -2,3 +2,4 @@ VENV
 *.log
 .env
 .idea
+__pychache__
