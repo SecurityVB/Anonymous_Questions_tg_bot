@@ -4,6 +4,8 @@ from aiogram.enums import ContentType
 from DataBase.sqlite_db import sql_select_username, sql_add_payment
 from config import Data
 from createbot import *
+from loggers import handlers_logger
+
 
 payment_router = Router()
 author = str()
@@ -27,7 +29,7 @@ async def successful_payment(message: types.Message):
     currency = payment_info.currency
     amount = payment_info.total_amount
 
-    logger.info(f"Пользователь {user_id}-{message.from_user.username} успешная оплата: currency='{currency}' total_amount='{amount}' invoice_payload='{payment_info.invoice_payload}' telegram_payment_charge_id='{payment_info.telegram_payment_charge_id}' provider_payment_charge_id='{payment_info.provider_payment_charge_id}'")
+    handlers_logger.info(f"Пользователь {user_id}-{message.from_user.username} успешная оплата: currency='{currency}' total_amount='{amount}' invoice_payload='{payment_info.invoice_payload}' telegram_payment_charge_id='{payment_info.telegram_payment_charge_id}' provider_payment_charge_id='{payment_info.provider_payment_charge_id}'")
     await sql_add_payment(user_id, currency, amount)
     if payload == "check_sender":
         await bot.send_message(chat_id=message.chat.id, text=f"@{author[0]} - вот кто вам написал данное сообщение 🔍👁")

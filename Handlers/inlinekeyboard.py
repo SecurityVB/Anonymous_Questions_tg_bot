@@ -11,6 +11,7 @@ from KeyBoards.inline_keyboards import kb_payment_method_donate, kb_payment_meth
     kb_partners
 from config import PAYMENTS_TOKEN, Data
 from createbot import *
+from loggers import handlers_logger
 
 
 inline_kb_router = Router()
@@ -45,7 +46,7 @@ async def process_price(message: types.Message, state: FSMContext):
         await donate_send_invoice_stars(message.chat.id)
         # await bot.send_message(chat_id=message.chat.id, text="Выберите удобный для вас способ оплаты", reply_markup=kb_payment_method_donate.as_markup())
     except Exception as err:
-        logger.warning(f"Пользователь ввёл некорректную сумму пожертвования: {err}")
+        handlers_logger.warning(f"Пользователь ввёл некорректную сумму пожертвования: {err}")
         await message.answer("❌ Вы ввели некорректную сумму пожертвования.")
 
 

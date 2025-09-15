@@ -8,6 +8,7 @@ from DataBase.sqlite_db import sql_add_id, sql_select_id, sql_add_message
 from KeyBoards.inline_keyboards import kb_start, kb_check_author
 from createbot import *
 from config import Data
+from loggers import handlers_logger
 
 
 commands_router = Router()
@@ -31,7 +32,7 @@ async def command_handler_start_referral(message: types.Message, command: Comman
         await state.set_state(Form.question)
         await message.answer(f"Задайте любой вопрос {recipient}")
     else:
-        logger.warning(f"Пользователь {message.from_user.id}-{username} написал самому себе по ссылке")
+        handlers_logger.warning(f"Пользователь {message.from_user.id}-{username} написал самому себе по ссылке")
         await message.answer("❌ Вы не можете писать самому себе")
 
 

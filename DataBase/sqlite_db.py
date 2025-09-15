@@ -1,7 +1,7 @@
 import sqlite3 as sq
 from createbot import *
 import datetime
-from createbot import logger
+from loggers import database_logger
 
 
 def sql_start():
@@ -10,7 +10,7 @@ def sql_start():
     base = sq.connect('DataBase/database.db')
     cur = base.cursor()
     if base:
-        logger.info('База данных подключена')
+        database_logger.info('База данных подключена')
 
     base.execute('CREATE TABLE IF NOT EXISTS Users(user_id BINDING PRIMARY KEY, username TEXT, register_date DATETIME)')
     base.commit()
@@ -28,7 +28,7 @@ async def sql_add_id(message) -> None:
         current_timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         base.execute('INSERT INTO Users (user_id, username, register_date) VALUES (?, ?, ?)', (id_user, username, current_timestamp))
         base.commit()
-        logger.info(f"Пользователь {id_user}-{username} добавлен в базу данных.")
+        database_logger.info(f"Пользователь {id_user}-{username} добавлен в базу данных.")
 
 
 async def sql_add_message(message, content, recipient_id) -> None:
@@ -37,7 +37,7 @@ async def sql_add_message(message, content, recipient_id) -> None:
     current_timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     base.execute('INSERT INTO Messages (message_id, recipient, sender, content, register_date) VALUES (?, ?, ?, ?, ?)', (msg_id, recipient_id, user_id, content, current_timestamp))
     base.commit()
-    logger.info(f"Сообщение {msg_id} добавлено в базу данных. Маршрут сообщения от {user_id} -> {recipient_id}")
+    database_logger.info(f"Сообщение {msg_id} добавлено в базу данных. Маршрут сообщения от {user_id} -> {recipient_id}")
 
 
 async def sql_add_payment(payer_id, currency, amount):

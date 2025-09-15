@@ -7,11 +7,11 @@ from Handlers.payment import payment_router
 from createbot import *
 from Handlers.commands import commands_router
 from Handlers.inlinekeyboard import inline_kb_router
-from createbot import logger
+from loggers import main_logger
 
 
 async def on_startup():
-    logger.info('Бот вышел в онлайн.')
+    main_logger.info('Бот вышел в онлайн.')
     sql_start()
     dp.include_router(payment_router)
     dp.include_router(commands_router)
