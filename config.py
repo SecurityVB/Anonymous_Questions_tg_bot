@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-PAYMENTS_TOKEN = os.getenv("PAYMENTS_TOKEN")
+# PAYMENTS_TOKEN = os.getenv("PAYMENTS_TOKEN")
 
 class Data:
     sender = int()

@@ -71,7 +71,7 @@ async def handle_reply(message: types.Message):
         replied_msg = message.reply_to_message
         if replied_msg.from_user.id == (await message.bot.me()).id:
             await sql_add_message(message, message.text, Data.recipient)
-            msg = await bot.send_message(text=f"🎉Вам пришло новое сообщение📨:\n\n<b>{message.text}</b>\n\n↪️ Свайпни для ответа", chat_id=Data.recipient, reply_markup=kb_check_author.as_markup())
+            msg = await bot.send_message(text=f"🎉Вам пришло новое сообщение📨:\n\n<b>{message.text}</b>\n\n↪️ Свайпни для ответа", chat_id=Data.recipient) #, reply_markup=kb_check_author.as_markup())
             msg_reply_id = msg.message_id
 
 
