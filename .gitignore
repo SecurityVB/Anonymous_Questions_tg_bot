@@ -1,4 +1,5 @@
 VENV
+.venv
 *.log
 .env
 .idea
